@@ -3,10 +3,13 @@ package org.example;
 import java.io.IOException;
 
 import org.example.models.Entity;
+import org.example.models.EventRegistry;
 import org.example.models.Monster;
+import org.example.models.MonsterFactory;
 import org.example.models.Player;
 import org.example.models.defence.Shield;
 import org.example.models.statuses.StunnedStatus;
+import org.example.models.weapons.Hammer;
 import org.example.models.weapons.Hands;
 
 import jakarta.servlet.*;
@@ -19,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet implementation class MainServlet
  */
-@WebServlet("/MainServlet")
+@WebServlet("/main")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,15 +46,11 @@ public class MainServlet extends HttpServlet {
 		if(session.getAttribute("gameStatus")==null) {
 			session.setAttribute("gameStatus", "start");
 			Player player=new Player(new Hands(1,5),new Shield(4),20,10);
-			player.addStatus(new StunnedStatus(2));
-			Monster monster=new Monster(new Hands(1,5),new Shield(4),5,10);
+			session.setAttribute("monster", new MonsterFactory().getMonster(1));
 			session.setAttribute("player",player);
-			session.setAttribute("monster",monster);
 			
 		}
-		
-		
-
+		session.setAttribute("registry", EventRegistry.getInstance().getEvents());
 	        getServletContext().getRequestDispatcher("/Main.jsp").forward(request, response);
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -64,16 +63,38 @@ public class MainServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 
-		 System.out.println(session.getAttribute("player"));
-		if(session.getAttribute("age")!=null) {
-			int j=(int)session.getAttribute("age");
-			j++;
-			System.out.println(j);
-			session.setAttribute("age",j);
+		String button=(String) request.getParameter("button");
+		System.out.println(button);
+		Player player=(Player) session.getAttribute("player");
+		Monster monster=(Monster) session.getAttribute("monster");
+		
+		
+		player.applyStatuses();
+		switch(button) {
+		
+		case "attack":
+			player.fight(monster);
+			break;
+
+		case "heal":
+			player.heal();
+			break;
+
+		case "start":
 			
-		}else session.setAttribute("age", 34);
-			
-		//request.setAttribute("age",(int)request.getAttribute("age")+1);
+			break;
+		}
+		monster.applyStatuses();
+		monster.fight(player);
+		if(player.getHealth()<=0) {
+			getServletContext().getRequestDispatcher("/gameOver.jsp").forward(request, response);
+			return;
+		}
+		if(monster.getHealth()<=0) {
+			response.sendRedirect("http://localhost:8080/game/levelup");
+			return;
+		}
+		
 		doGet(request, response);
 	}
 

@@ -1,22 +1,29 @@
 package org.example.models;
 
-import org.example.models.defence.DefenceInterface;
-import org.example.models.weapons.WeaponInterface;
+import org.example.models.defence.Defence;
+
+import org.example.models.weapons.Weapon;
+
 
 public class Player extends Entity{
     private int healingPoints=4;
+    private EventRegistry registry=EventRegistry.getInstance();
 
-
-    public Player(WeaponInterface weapon, DefenceInterface armour, int attack, int health) {
+    public Player(Weapon weapon, Defence armour, int attack, int health) {
         super(weapon, armour, attack, health);
     }
     public void heal(){
+    	if(!isActive()) {
+    		registry.addEvent("Player is stunned");
+    		return;
+    	}
         if(healingPoints!=0){
             healingPoints--;
             int health=getMaxHealth()*30/100+getHealth();
             setHealth(Math.min(health, getMaxHealth()));
+            registry.addEvent("Player healed");
         }else{
-            System.out.println("No healing points left");
+            registry.addEvent("No healing points left");
         }
     }
 }

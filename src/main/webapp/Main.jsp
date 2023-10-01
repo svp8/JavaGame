@@ -25,6 +25,7 @@ ArrayList<String> hr=new ArrayList();
 ArrayList<String> mStatuses=new ArrayList();
 Player player=(Player)session.getAttribute("player");
 Monster monster=(Monster)session.getAttribute("monster");
+ArrayList<String> map=(ArrayList)session.getAttribute("registry");
 if(player!=null){
 	health=player.getHealth();
 	statuses=player.getStatuses();
@@ -83,5 +84,11 @@ if(monster!=null){
 </ul>
 </ul>
 <jsp:include page="menu.jsp"/>
+<ul>
+<c:forEach items="<%=map %>" var="entry">
+    <li>${entry}</li>
+</c:forEach>
+</ul>
+
 </body>
 </html>
