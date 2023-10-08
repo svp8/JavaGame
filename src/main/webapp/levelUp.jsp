@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h3>Choose your upgrade</h3>
 <form action="/game/levelup" method="post">
     <input type="submit" name="button" value="Health" />	
     <input type="submit" name="button" value="Attack" />

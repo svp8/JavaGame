@@ -1,11 +1,10 @@
 package org.example.models.defence;
 
 import org.example.models.Entity;
-import org.example.models.weapons.WeaponInterface;
 
 import java.util.Random;
 
-public class Shield extends Defence implements DefenceInterface{
+public class Shield extends Defence{
 
 
     public Shield(int defence) {
@@ -13,10 +12,4 @@ public class Shield extends Defence implements DefenceInterface{
 
     }
 
-
-
-//    @Override
-//    public int getDefence() {
-//        return this.defence;
-//    }
 }

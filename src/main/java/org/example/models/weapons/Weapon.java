@@ -4,7 +4,7 @@ import org.example.models.Entity;
 
 import java.util.Random;
 
-public class Weapon implements WeaponInterface {
+public class Weapon  {
     private int damageMin;
     private int damageMax;
 

@@ -51,16 +51,16 @@ public class LevelUpServlet extends HttpServlet {
 		int level=player.getLevel();
 		switch(button) {
 		case "Health":
-			player.setMaxHealth(player.getMaxHealth()+5*level);
+			player.setMaxHealth(player.getMaxHealth()+2*level);
 			break;
 		case "Attack":
-			player.setAttack(player.getAttack()+5*level);
+			player.setAttack(player.getAttack()+2*level);
 			break;
 		case "Defence":
 			player.setDefence(new Shield(level*5));
 			break;
 		case "Weapon":
-			player.setWeapon(new Hammer(3*level,7*level));
+			player.setWeapon(new Hammer(2*level,3*level));
 			break;
 		}
 		session.setAttribute("monster", new MonsterFactory().getMonster(level));

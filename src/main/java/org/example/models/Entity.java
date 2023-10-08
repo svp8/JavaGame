@@ -1,10 +1,9 @@
 package org.example.models;
 
 import org.example.models.defence.Defence;
-import org.example.models.defence.DefenceInterface;
+import org.example.models.statuses.PoisonedStatus;
 import org.example.models.statuses.Status;
 import org.example.models.weapons.Weapon;
-import org.example.models.weapons.WeaponInterface;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,6 +25,14 @@ public class Entity {
 
     public ArrayList<Status> getStatuses() {
         return statuses;
+    }
+    public boolean hasStatus(Class<? extends Status> s) {
+    	for(Status s1:statuses) {
+    		if(s1.getClass().equals(s)) {
+    			return true;
+    		}
+    	}
+        return false;
     }
     public ArrayList<Status> addStatus(Status status) {
         statuses.add(status);
@@ -62,7 +69,6 @@ public class Entity {
 
     public void applyStatuses(){
         statuses.removeIf(x->!x.applyStatusEffects(this));
-        System.out.println(statuses);
     }
     public void fight(Entity enemy){
     	String temp[]=this.getClass().toString().split(" ")[1].split("\\.");
@@ -103,6 +109,9 @@ public class Entity {
     }
     public void setDefence(Defence d) {
     	defence=d;
+    }
+    public Weapon getWeapon() {
+        return weapon;
     }
     public void setWeapon(Weapon w) {
     	weapon=w;

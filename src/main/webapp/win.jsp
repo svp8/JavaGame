@@ -8,5 +8,6 @@
 </head>
 <body>
 <p>You won!</p>
+<a href="/game/start">Play again</a>
 </body>
 </html>
